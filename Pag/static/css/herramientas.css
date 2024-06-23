@@ -1,0 +1,164 @@
+:root {
+    --font: Lato;
+    --size: 16px;
+    --normal: 400;
+    --bold: 500;
+    --primary: #ffffff; 
+  }
+  
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    width: 100%;
+    background-color: transparent;
+    font-family: var(--font);
+    font-size: var(--size);
+    color: var(--primary);
+    font-weight: var(--normal);
+    overflow-x: hidden;
+  }
+  
+  .mainContainer {
+    padding: 0 8%;
+    background-image: linear-gradient(rgba(59, 59, 59, 0.3), rgba(45, 44, 44, 0.3)),
+      url(Fondo.png);
+    background-repeat: repeat;
+    overflow: hidden;
+  }
+  
+  .navbar {
+    height: 70px;
+    background-color: transparent;
+    padding: 0;
+  }
+  
+  .navbar-brand {
+    color: white;
+    font-weight: var(--bold);
+    font-size: 24px;
+    line-height: 29px;
+    margin-left: 13%;
+    transition: all;
+    transition-duration: 1s;
+  }
+  
+  .navbar-brand:hover,
+  .navbar-brand:focus {
+    transform: scale(1.2);
+    -webkit-text-stroke: 1px white;
+    -webkit-text-stroke-color: transparent;
+  }
+  
+  .navbar-collapse {
+    justify-content: flex-end;
+  }
+  
+  .navbar-nav {
+    width: 70% !important;
+    position: relative;
+  }
+  
+  .navbar-nav .last {
+    position: absolute;
+    right: 0 !important;
+  }
+  
+  .navbar-nav .nav-item {
+    margin: 0 10px;
+  }
+  
+  .navbar-nav .nav-link {
+    color: white;
+    padding: 10px 0;
+    font-weight: var(--bold);
+    transition: all;
+    transition-duration: 1s;
+  }
+  
+  .navbar-nav .nav-link:hover,
+  .navbar-nav .nav-link:active,
+  .navbar-nav .nav-link:focus {
+    border-bottom: 2px solid white;
+    transform: translateY(-5px);
+  }
+  .card {
+    margin-top: 60px; 
+    margin-bottom: 20px;
+    width: 15rem;
+    box-shadow: 2px solid rgb(253, 148, 0);
+    overflow: hidden;
+  }
+  .card-img-top {
+    width: 200px;
+    height: 200px;
+    align-self: center;
+  }
+  .card-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .card-block .add-to-cart {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    background-color: rgb(234, 128, 0);
+    border: none;
+    border-radius: 15px;
+    color: white;
+    transition: all 0.3s ease;
+  }
+  .add-to-cart.btn {
+    background-color: orange;
+    border-color: orange; /* Para que el borde también sea naranja */
+    color: white; /* Para asegurar que el texto sea legible */
+  }
+  .btn-primary {
+    background-color: orange;
+    border-color: orange; /* Para que el borde también sea naranja */
+    color: white; /* Para asegurar que el texto sea legible */
+  }
+  
+  .card-block .add-to-cart:hover {
+    background-color: darkorange; /* Color de fondo más oscuro al pasar el mouse */
+  }
+  
+   /* Dropdown bar estilo */
+   .dropdown-menu {
+    background-color: #333; /* Color de fondo */
+    color: white; /* Color del texto */
+    border: none; /* Sin borde */
+  }
+  
+  /* Estilo para los ítems del menú desplegable */
+  .dropdown-item {
+    color: white; /* Color del texto */
+  }
+  
+  /* Estilo para los ítems del menú desplegable al pasar el mouse */
+  .dropdown-item:hover {
+    background-color: #555; /* Color de fondo al pasar el mouse */
+  }
+
+    .quantity-buttons {
+      display: flex;
+      align-items: center;
+      justify-content: space-between; /* Espacio uniforme entre los elementos */
+      max-width: 150px; /* Ajusta el ancho máximo de la barra */
+      margin: auto; /* Centra la barra horizontalmente */
+  }
+
+  .quantity-buttons button {
+      height: 38px; /* Ajusta la altura de los botones */
+      margin: 0 5px; /* Agrega un margen horizontal entre los botones */
+  }
+
+  .quantity-buttons input {
+      height: 38px; /* Ajusta la altura del campo de entrada */
+      width: 70px; /* Ajusta el ancho del campo de entrada */
+      text-align: center; /* Centra el texto dentro del campo */
+  }

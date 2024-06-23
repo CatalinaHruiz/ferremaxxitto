@@ -1,0 +1,76 @@
+<!-- agregar_trabajador.html -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agregar Trabajador</title>
+</head>
+<body>
+    <h1>Agregar Nuevo Trabajador</h1>
+    <form id="formulario-trabajador">
+        <!-- Campos para ingresar los datos del trabajador -->
+        <label for="rut">RUT:</label>
+        <input type="text" id="rut" name="rut" required><br>
+
+        <label for="nombre">Nombre:</label>
+        <input type="text" id="nombre" name="nombre" required><br>
+
+        <label for="correo">Correo electrónico:</label>
+        <input type="email" id="correo" name="correo" required><br>
+
+        <label for="contrasena">Contraseña:</label>
+        <input type="password" id="contrasena" name="contrasena" required><br>
+
+        <label for="direccion">Dirección:</label>
+        <input type="text" id="direccion" name="direccion"><br>
+
+        <label for="telefono">Teléfono:</label>
+        <input type="tel" id="telefono" name="telefono"><br>
+
+        <label for="pregunta_seguridad">Pregunta de Seguridad:</label>
+        <select id="pregunta_seguridad" name="pregunta_seguridad" required>
+            <!-- Opciones de pregunta de seguridad -->
+            {% for pregunta in preguntas %}
+            <option value="{{pregunta.id_preg}}">{{pregunta.nombre_preg}}</option>
+            {% endfor %}
+        </select><br>
+
+        <label for="rol">Rol:</label>
+        <select id="rol" name="rol" required>
+            <!-- Opciones de rol -->
+            {% for rol in roles %}
+            <option value="{{rol.id_rol}}">{{rol.nombre_rol}}</option>
+            {% endfor %}
+        </select><br>
+
+        <button type="submit">Agregar Trabajador</button>
+    </form>
+
+    <!-- Script para enviar los datos del formulario a la API -->
+    <script>
+        document.getElementById("formulario-trabajador").addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            var formData = new FormData(this);
+
+            fetch('api/creausuario', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+                if (response.ok) {
+                    alert('Trabajador agregado exitosamente.');
+                    window.location.href = 'Sesion'; // Redirige a la página de administrador después de agregar el trabajador
+                } else {
+                    alert('Ocurrió un error al agregar el trabajador. Por favor, inténtalo de nuevo.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Ocurrió un error grave al agregar el trabajador. Por favor, inténtalo de nuevo.');
+            });
+        });
+    </script>
+</body>
+</html>

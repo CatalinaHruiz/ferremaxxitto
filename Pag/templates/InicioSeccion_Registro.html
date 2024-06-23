@@ -1,0 +1,93 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ferremas</title>
+</head>
+<body>
+    <!-- MENÚ -->
+    <nav class="navbar navbar-expand-md navbar-dark menu">
+        <a class="navbar-brand" href="{% url 'MenuPrincipal' %}">Ferremas</a>
+        <div class="collapse navbar-collapse" id="collapsibleNavbar">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'Herramientas' %}">Herramientas</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'Sesion' %}">Iniciar Sesión</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div class="container" id="container">
+        <!--Registro-->
+        <div class="form-container sign-up-container">
+            <form action="{% url 'registrar' %}" method="post" id="formulario-registro">
+                {% csrf_token %}
+                <h1>Registrate </h1>
+                <span>Usa tu correo electrónico para registrarte 🤔</span>
+                <input type="text" name="rut" placeholder="Ingresa tu Rut " />
+                <input type="text" name="name" placeholder="Ingresa tu Nombre " />
+                <input type="text" name="direccion" placeholder="Ingresa tu Dirreción" />
+                <input type="email" name="correo" placeholder="Ingresa tu Correo electrónico" />
+                <input type="number" name="telefono" placeholder="Ingresa tu Telefono " />
+                <input type="password" name="password" placeholder=" Ingresa tu Contraseña" />   
+                <select name="pregunta">
+                    <option selected>Selecciona una pregunta de Seguridad</option>
+                    {% for pregunta in preguntas %}
+                        <option value="{{ pregunta.id_preg }}">{{ pregunta.nombre_preg }}</option>
+                    {% endfor %}
+                </select>
+                
+                <input type="text" name="rs" placeholder="Respuesta de Seguridad " />
+                <button>Registrarse </button>
+            </form>
+             <!--Fin de formulario de Registro-->
+        </div>
+
+         <!--InicioSesion-->
+        <div class="form-container sign-in-container">
+            <form method="post" action="{% url 'iniciarsesion' %}">
+                {% csrf_token %}
+                <h1>Iniciar sesión</h1>
+                <span>Usa tu cuenta para iniciar sesión 🤗</span>
+                <input type="email" name="correo" placeholder="Correo electrónico" required>
+                <input type="password" name="clave" placeholder="Contraseña" required>
+                <a href="olvidocontraseña.html">¿Olvidaste tu contraseña?</a>
+                <button type="submit">Iniciar sesión</button>
+            </form>     
+            
+        </div>
+        <!--Fin de formulario de InicioSesion-->
+
+        <!--Interfaces de Hola contructor-->
+        <div class="overlay-container">
+            <div class="overlay">
+                <div class="overlay-panel overlay-left">
+                    <h1>¡Bienvenido de nuevo, Constructor ! 🔨</h1>
+                    <p>Para seguir conectado con nuestro mundo de herramientas, por favor inicia sesión con tu información personal.</p>
+                    <button class="ghost" id="signIn">Iniciar sesión</button>
+                </div>
+                <div class="overlay-panel overlay-right">
+                    <h1>¡ Hola Constructor ! 🔨</h1>
+                    <p>✨ Tu taller de sueños te espera. ✨</p>
+                    <button class="ghost" id="signUp">¡ Registrate !</button>
+                </div>
+            </div>
+        </div>
+        <!-- Fin de Interfaces de Hola contructor-->
+    </div>
+
+    <!-- CSS Y JS -->
+    <link rel="stylesheet" href="{% static 'css/inicioseccion.css' %}">
+    <script src="{% static 'javascript/inicioseccion.js' %}"></script>
+
+    <!-- carrito-->
+
+</body>
+<footer>
+    <p>&copy; 2024 Tienda Online. Todos los derechos reservados.</p>
+</footer>
+</html>

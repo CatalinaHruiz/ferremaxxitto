@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="es" ng-app="inventarioApp">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ferremas-Vendedor</title>
+    <link rel="stylesheet" href="{% static 'css/inventarioAct.css' %}">
+    <link rel="stylesheet" href="{% static 'css/agregar.css' %}">
+    
+    <style>
+        /* Estilos para el modal (splash) */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            padding-top: 100px;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0,0,0);
+            background-color: rgba(0,0,0,0.4);
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body ng-controller="inventarioController">
+    <header>
+        <nav id="cssmenu">
+            <div class="logo">
+                <a href="index.html">Ferremas-Vendedor</a>
+            </div>
+            <div id="head-mobile"></div>
+            <div class="button"></div>
+            <ul>
+                <li>
+                    <a href="javascript:void(0);">Inventario</a>
+                    <ul>
+
+                        <li><a href="{% url 'Vendedor' %}">Ver inventario actual</a></li>
+                        <li><a href="{% url 'mostrarcategoria' %}">Añadir Producto</a></li>
+                        <li><a href="{% url 'mostrarnuevotrabajador' %}">Nuevo Trabajador</a></li>
+                        <li><a href="{% url 'finsesion' %}">Cerrar Sesion</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="container-fluid">
+
+            <div class="col-xs-12 col-sm-6">
+                <h1>Inventario actual</h1>
+                <div class="container">
+                    <div class="body-content">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="panel z-depth-1">
+                                    <div class="panel-content">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="table-responsive">
+                                                    <table id="dataTable" class="table table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Articulo</th>   
+                                                                <th>Precio</th>                                                          
+                                                                <th>Descripción</th>
+                                                                <th>Categoría</th>
+                                                                <th>Cantidad disponible</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {% for producto in productos %}
+                                                            <tr>
+                                                                <td>{{ producto.nombre_prod }}</td>
+                                                                <td>{{ producto.precio }}</td>
+                                                                <td>{{ producto.descripcion }}</td>
+                                                                <td>{{ producto.id_categoria.nombre_categoria }}</td>
+                                                                <td>{{ producto.stock }}</td>
+                                                                <td>
+                                                                    <button class="btn btn-default">
+                                                                        <a href="{% url 'mostrarproducto' producto.id_prod %}">Modificar</a>
+                                                                    </button>
+                                                                    <button class="btn btn-danger">
+                                                                        <a href="{% url 'eliminarproducto' producto.id_prod %}">Eliminar</a>
+                                                                    </button>
+                                                                </td>
+                                                            </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de edición -->
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <span class="close" ng-click="closeModal()">&times;</span>
+            <h2>Editar producto</h2>
+            <form name="editarFormulario" novalidate>
+                <div class="form-group">
+                    <label for="editarPrecio">Precio:</label>
+                    <input autocomplete="off" required id="editarPrecio" placeholder="Escribe el precio del producto" type="number" class="form-control" ng-model="productoSeleccionado.precio" />
+                </div>
+                <div class="form-group">
+                    <label for="editarDescripcion">Descripción:</label>
+                    <textarea id="editarDescripcion" class="form-control" ng-model="productoSeleccionado.descripcion"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="editarCantidad">Cantidad:</label>
+                    <input type="number" id="editarCantidad" class="form-control" ng-model="productoSeleccionado.cantidad" />
+                </div>
+                <button type="button" ng-disabled="editarFormulario.$invalid" ng-click="guardarCambios()" class="btn btn-success form-control">Guardar cambios</button>
+            </form>
+        </div>
+    </div>
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <script src="{% static 'js/inventario.js' %}"></script>
+    
+</body>
+</html>

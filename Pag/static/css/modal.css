@@ -1,0 +1,29 @@
+.modal {
+    display: none; /* Oculta el modal por defecto */
+    position: fixed; /* Posición fija */
+    z-index: 1; /* Ubica el modal sobre otros elementos */
+    left: 50%; /* Centra horizontalmente */
+    top: 50%; /* Centra verticalmente */
+    transform: translate(-50%, -50%); /* Centra el modal */
+    width: 400px; /* Ancho del modal */
+    max-width: 90%; /* Ancho máximo del modal */
+    padding: 20px; /* Espaciado interno */
+    border: 1px solid #ccc; /* Borde */
+    background-color: #fff; /* Color de fondo */
+    border-radius: 8px; /* Bordes redondeados */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra */
+}
+
+/* Estilos para el contenido del modal */
+.modal-content {
+    text-align: center; /* Centra el contenido */
+}
+
+/* Estilos para el botón de cerrar */
+.close {
+    position: absolute; /* Posición absoluta */
+    top: 10px; /* Ubicación superior */
+    right: 10px; /* Ubicación derecha */
+    cursor: pointer; /* Cursor de puntero */
+    font-size: 20px; /* Tamaño de fuente */
+}

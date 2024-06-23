@@ -1,0 +1,104 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es" ng-app="inventarioApp">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ferremas-Vendedor</title>
+    <link rel="stylesheet" href="{% static 'css/inventarioAct.css' %}">
+    <link rel="stylesheet" href="{% static 'css/agregar.css' %}">
+    
+    <style>
+        /* Estilos para el modal (splash) */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            padding-top: 100px;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0,0,0);
+            background-color: rgba(0,0,0,0.4);
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body ng-controller="inventarioController">
+    <header>
+        <nav id="cssmenu">
+            <div class="logo">
+                <a href="index.html">Ferremas-Vendedor</a>
+            </div>
+            <div id="head-mobile"></div>
+            <div class="button"></div>
+            <ul>
+                <li>
+                    <a href="javascript:void(0);">Inventario</a>
+                    <ul>
+
+                        <li><a href="{% url 'Vendedor' %}">Ver inventario actual</a></li>
+                        <li><a href="{% url 'Vendedor' %}">Añadir Producto</a></li>
+                        <li><a href="{% url 'finsesion' %}">Cerrar Sesion</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <h1>Modificar Producto</h1>
+    <form method="post" action="{% url 'modificarproducto' productos.id_prod %}" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="file" name="imagen" value="{{productos.imagen}}">
+        <div>
+            <label for="nombre_prod">Nombre del Producto:</label>
+            <input type="text" id="nombre_prod" name="nombre" value="{{ productos.nombre_prod }}" maxlength="30" required>
+        </div>
+        <div>
+            <label for="descripcion">Descripción:</label>
+            <input type="text" id="descripcion" name="descripcion" value="{{ productos.descripcion }}" maxlength="70" required>
+        </div>
+        <div>
+            <label for="precio">Precio:</label>
+            <input type="number" id="precio" name="precio" value="{{ productos.precio }}" required>
+        </div>
+        <div>
+            <label for="stock">Stock:</label>
+            <input type="number" id="stock" name="stock" value="{{ productos.stock }}" required>
+        </div>
+        <div>
+            <label for="id_categoria">Categoría:</label>
+            <select id="id_categoria" name="categoria" required>
+                {% for categoria in categorias %}
+                    <option value="{{ categoria.id_categoria }}" {% if categoria.id_categoria == productos.id_categoria %}selected{% endif %}>
+                        {{ categoria.nombre_categoria }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+        <button type="submit">Modificar Producto</button>
+    </form>
+    
+    
+</body>
+</html>

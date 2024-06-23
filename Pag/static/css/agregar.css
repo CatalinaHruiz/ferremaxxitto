@@ -1,0 +1,129 @@
+/* Estilos generales */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+    margin: 0;
+
+  }
+  /* Estilos para la descripción */
+textarea#descripcion {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ddd;
+  height: 100px; /* Ajusta esto según tus necesidades */
+  resize: vertical; /* Permite al usuario cambiar el tamaño verticalmente */
+}
+
+/* Estilos para el input de imagen */
+input[type="file"]#imagen {
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ddd;
+}
+
+/* Estilos para el select de categoría */
+select#categoria {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ddd;
+  background-color: white;
+  -webkit-appearance: none; /* Remueve la apariencia nativa en Safari */
+  -moz-appearance: none;    /* Remueve la apariencia nativa en Firefox */
+  appearance: none;         /* Remueve la apariencia nativa en otros navegadores */
+}
+
+/* Estilo para el icono de despliegue del select */
+select#categoria {
+  background-image: url('data:image/svg+xml;utf8,<svg fill="%23333" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
+  background-repeat: no-repeat;
+  background-position: right 10px top 50%;
+  background-size: 12px 12px;
+}
+
+/* Ajustes adicionales para el botón */
+.btn-success {
+  background-color: #4CAF50; /* Verde */
+  color: white;
+}
+
+/* Ajustes para mejorar la visualización en dispositivos móviles */
+@media (max-width: 768px) {
+  input[type="text"],
+  input[type="number"],
+  textarea#descripcion,
+  input[type="file"]#imagen,
+  select#categoria {
+    padding: 15px; /* Más espacio para tocar con los dedos */
+  }
+}
+
+  .container-fluid {
+    width: 90%;
+    margin: auto;
+  }
+  .menu-item {
+    display: inline-block; /* o 'flex' si estás usando Flexbox */
+}  
+  h1, h3 {
+    color: #151616;
+    margin-top: 35px;
+  }
+  
+  /* Estilos del formulario */
+  .form-group {
+    margin-bottom: 15px;
+  }
+  
+  label {
+    display: block;
+    margin-bottom: 5px;
+  }
+  
+  input[type="text"],
+  input[type="number"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+  }
+  
+  .btn-success {
+    border-radius:20px; 
+    height:2.5rem; 
+    background-color:#f3b238; 
+    border:none; 
+    color: white;
+    padding: 10px;
+    width: 100%;
+    margin-top: 10px;
+  }
+  
+  /* Estilos de la tabla */
+  .table {
+    width: 100%;
+    margin-top: 20px;
+    border-collapse: collapse;
+  }
+  
+  .table-bordered, .table-bordered th, .table-bordered td {
+    border: 1px solid #ddd;
+  }
+  
+  .table th,
+  .table td {
+    text-align: left;
+    padding: 10px;
+  }
+  
+  /* Estilos responsivos */
+  @media (max-width: 768px) {
+    .row {
+      flex-direction: column;
+    }
+  }
+
+  
+  

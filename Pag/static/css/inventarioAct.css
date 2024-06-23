@@ -1,0 +1,580 @@
+/* Estilos generales */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+    margin: 0;
+
+  }
+  
+  .container-fluid {
+    width: 90%;
+    margin: auto;
+  }
+  .menu-item {
+    display: inline-block; /* o 'flex' si estás usando Flexbox */
+}  
+  h1, h3 {
+    color: #151616;
+    margin-top: 35px;
+  }
+  
+  /* Estilos del formulario */
+  .form-group {
+    margin-bottom: 15px;
+  }
+  
+  * Estilos del formulario y tabla */
+.panel-content {
+  background-color: #ca9b9b;
+  padding: 20px;
+  margin-top: 20px; /* Separación del header */
+}
+
+.form-group label {
+  color: #a1642a;
+  font-weight: bold;
+}
+
+.form-control.boxed-input {
+  border: 1px solid #cc4545;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.btn-primary {
+  background-color: #0275d8;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  margin-top: 10px;
+}
+
+.table {
+  width: 100%;
+  margin-top: 20px;
+  border-collapse: collapse;
+}
+
+.table th {
+  background-color: #d1d1d134;
+  color: #292929;
+  padding: 10px;
+}
+
+.table td {
+  padding: 10px;
+  border: 1px solid #ddd;
+}
+
+.btn-default {
+  background-color: #f8f9fa;
+  color: #333;
+  border: 1px solid #ccc;
+  padding: 5px 10px;
+}
+
+.btn-danger {
+  background-color: #d9534f;
+  color: #fff;
+  border: none;
+  padding: 5px 10px;
+}
+  label {
+    display: block;
+    margin-bottom: 5px;
+  }
+  
+  input[type="text"],
+  input[type="number"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+  }
+  
+  .btn-success {
+    border-radius:20px; 
+    height:2.5rem; 
+    background-color:#f3b238; 
+    border:none; 
+    color: white;
+    padding: 10px;
+    width: 100%;
+    margin-top: 10px;
+  }
+  
+  /* Estilos de la tabla */
+  .table {
+    width: 100%;
+    margin-top: 20px;
+    border-collapse: collapse;
+  }
+  
+  .table-bordered, .table-bordered th, .table-bordered td {
+    border: 1px solid #ddd;
+  }
+  
+  .table th,
+  .table td {
+    text-align: left;
+    padding: 10px;
+  }
+  
+  /* Estilos responsivos */
+  @media (max-width: 768px) {
+    .row {
+      flex-direction: column;
+    }
+  }
+
+  
+/* Estilos para el logotipo */
+.logo {
+    background-color: #404040;
+    float: left;
+    font: 18px;
+    padding: 10px;
+    position: relative;
+    text-align: center;
+    width: 100%;
+}
+
+/* Estilos para los enlaces del logotipo */
+.logo a {
+    color: #ffffff;
+    text-decoration: none;
+}
+
+/* Estilos para la barra de navegación */
+nav {
+    margin: 0 auto;
+    position: relative;
+    width: 980px;
+}
+
+/* Estilos para el menú de navegación */
+#cssmenu,
+#cssmenu ul,
+#cssmenu ul li,
+#cssmenu ul li a,
+#cssmenu #head-mobile {
+    box-sizing: border-box;
+    border: 0;
+    display: block;
+    line-height: 1;
+    list-style: none;
+    position: relative;
+}
+
+/* Estilos para el menú de navegación (continuación) */
+#cssmenu:after,
+#cssmenu > ul:after {
+    clear: both;
+    content: '.';
+    display: block;
+    height: 0;
+    line-height: 0;
+    visibility: hidden;
+}
+
+/* Estilos para el ícono de menú móvil */
+#cssmenu #head-mobile {
+    display: none;
+}
+
+/* Estilos para el menú de navegación (continuación) */
+#cssmenu {
+    background-color: #333333;
+    font-family: sans-serif;
+    width: 100%;
+}
+
+/* Estilos para los elementos del menú de navegación */
+#cssmenu > ul > li {
+    float: left;
+}
+
+/* Estilos para los enlaces del menú de navegación */
+#cssmenu > ul > li > a {
+    color: #dddddd;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 17px;
+    text-decoration: none;
+}
+
+/* Estilos para los enlaces del menú de navegación cuando se pasa el ratón sobre ellos */
+#cssmenu > ul > li:hover > a,
+#cssmenu ul li.active a {
+    color: #ffffff;
+}
+
+/* Estilos para los elementos del menú de navegación cuando se pasa el ratón sobre ellos */
+#cssmenu > ul > li:hover,
+#cssmenu ul li.active:hover,
+#cssmenu ul li.active,
+#cssmenu ul li.has-sub.active:hover {
+    background-color: #000000;
+    transition: background .3s ease;
+}
+
+/* Estilos para los elementos del menú de navegación con submenús */
+#cssmenu > ul > li.has-sub > a {
+    padding-right: 25px;
+}
+
+/* Estilos para los indicadores de submenú */
+#cssmenu > ul > li.has-sub > a:after {
+    background-color: #dddddd;
+    content: '';
+    display: block;
+    height: 2px;
+    position: absolute;
+    right: 11px;
+    top: 22px;
+    width: 8px;
+}
+
+/* Estilos para los indicadores de submenú (continuación) */
+#cssmenu > ul > li.has-sub > a:before {
+    background-color: #dddddd;
+    content: '';
+    display: block;
+    height: 8px;
+    position: absolute;
+    right: 14px;
+    top: 19px;
+    width: 2px;
+    transition: all .25s ease;
+}
+
+/* Estilos para los indicadores de submenú cuando se pasa el ratón sobre ellos */
+#cssmenu > ul > li.has-sub:hover > a:before {
+    height: 0;
+    top: 23px;
+}
+
+/* Estilos para los submenús */
+#cssmenu ul ul { 
+    left: -9999px;
+    position: absolute;
+}
+
+/* Estilos para los elementos de los submenús */
+#cssmenu ul ul li {
+    background-color: #333333;
+    height: 0;
+    transition: all .25s ease;
+}
+
+/* Estilos para mostrar los submenús al pasar el ratón */
+#cssmenu li:hover > ul {
+    left: auto;
+}
+
+/* Estilos para mostrar los elementos de los submenús al pasar el ratón */
+#cssmenu li:hover > ul > li {
+    height: 35px;
+}
+
+/* Estilos para los submenús anidados */
+#cssmenu ul ul ul {
+    margin-left: 100%;
+    top: 0;
+}
+
+/* Estilos para los enlaces de los submenús */
+#cssmenu ul ul li a {
+    border-bottom: 1px solid rgba(150, 150, 150, 0.15); 
+    color: #dddddd;
+    font-size: 12px;
+    font-weight: 400;
+    padding: 11px 15px;
+    text-decoration: none;
+    width: 170px;
+}
+
+/* Estilos para el último elemento de los submenús */
+#cssmenu ul ul li:last-child > a,
+#cssmenu ul ul li.last-item > a {
+    border-bottom: 0;
+}
+
+/* Estilos para los enlaces de los submenús al pasar el ratón sobre ellos */
+#cssmenu ul ul li:hover > a,
+#cssmenu ul ul li a:hover {
+    color: #fff1a2;
+}
+
+/* Estilos para los indicadores de submenú en los submenús */
+#cssmenu ul ul li.has-sub > a:after {
+    background-color: #dddddd;
+    content: '';
+    display: block;
+    height: 2px;
+    position: absolute;
+    right: 11px;
+    top: 16px;
+    width: 8px;
+}
+
+/* Estilos para los indicadores de submenú en los submenús (continuación) */
+#cssmenu ul ul li.has-sub > a:before {
+    background-color: #dddddd;
+    content: '';
+    display: block;
+    height: 8px;
+    position: absolute;
+    right: 14px;
+    top: 13px;
+    width: 2px;
+    transition: all .25s ease;
+}
+
+/* Estilos para los indicadores de submenú en los submenús cuando se pasa el ratón sobre ellos */
+#cssmenu ul ul > li.has-sub:hover > a:before {
+    height: 0;
+    top: 17px;
+}
+
+/* Estilos para los submenús anidados al pasar el ratón sobre ellos */
+#cssmenu ul ul li.has-sub:hover,
+#cssmenu ul li.has-sub ul li.has-sub ul li:hover {
+    background-color: #363636;
+}
+
+/* Estilos para los enlaces activos en los submenús anidados */
+#cssmenu ul ul ul li.active a {
+    border-left: 1px solid #333333;
+}
+
+/* Estilos para los enlaces activos en los submenús anidados (continuación) */
+#cssmenu > ul > li.has-sub > ul > li.active > a,
+#cssmenu > ul ul > li.has-sub > ul > li.active> a {
+    border-top: 1px solid #333333;
+}
+
+/* Estilos para los elementos del menú de navegación en dispositivos móviles */
+@media screen and (max-width:1000px){
+
+    /* Estilos para el logotipo en dispositivos móviles */
+    .logo {
+        float: none;
+        height: 46px;
+        left:  0;
+        padding: 10px 0 0 0;
+        position: absolute;
+        text-align: center;
+        top: 0;
+        width: 100%;
+    }
+
+    /* Estilos para ocultar el logotipo alternativo en dispositivos móviles */
+    .logo2 {
+        display: none;
+    }
+
+    /* Estilos para la barra de navegación en dispositivos móviles */
+    nav {
+        width: 100%;
+    }
+
+    /* Estilos para el menú de navegación en dispositivos móviles */
+    #cssmenu {
+        width: 100%;
+    }
+
+    /* Estilos para los elementos del menú de navegación en dispositivos móviles */
+    #cssmenu ul {
+        display: none;
+        width: 100%;
+    }
+
+    /* Estilos para los elementos del menú de navegación en dispositivos móviles */
+    #cssmenu ul li {
+        border-top: 1px solid #444444;
+        width: 100%;
+    }
+
+    /* Estilos para los elementos del menú de navegación en dispositivos móviles al pasar el ratón sobre ellos */
+    #cssmenu ul li:hover {
+        background-color: #363636;
+    }
+
+    /* Estilos para los elementos de los submenús en dispositivos móviles */
+    #cssmenu ul ul li,
+    #cssmenu li:hover > ul > li {
+        height: auto;
+    }
+
+    /* Estilos para los enlaces del menú de navegación en dispositivos móviles */
+    #cssmenu ul li a,
+    #cssmenu ul ul li a {
+        border-bottom: 0;
+        width: 100%;
+    }
+
+    /* Estilos para los enlaces de los submenús en dispositivos móviles */
+    #cssmenu ul ul li:hover > a,
+    #cssmenu ul ul li.active > a {
+        color: #ffffff;
+    }
+
+    /* Estilos para los submenús en dispositivos móviles */
+    #cssmenu ul ul,
+    #cssmenu ul ul ul {
+        left: 0;
+        margin: 0;
+        position: relative;
+        text-align: left;
+        width: 100%;
+    }
+
+    /* Estilos para los indicadores de submenú en dispositivos móviles */
+    #cssmenu > ul > li.has-sub > a:after,
+    #cssmenu > ul > li.has-sub > a:before,
+    #cssmenu ul ul > li.has-sub > a:after,
+    #cssmenu ul ul > li.has-sub > a:before {
+        display: none;
+    }
+
+    /* Estilos para el ícono de menú móvil */
+    #cssmenu #head-mobile {
+        color: #dddddd;
+        display: block;
+        font-size: 12px;
+        font-weight: 700;
+        padding: 23px;
+    }
+
+    /* Estilos para el botón de menú en dispositivos móviles */
+    .button {
+        cursor: pointer;
+        height: 46px;
+        position: absolute;
+        right: 0;
+        top: 0;
+        width: 55px;
+        z-index: 12399994;
+    }
+
+    /* Estilos para el ícono de menú móvil después de abrir el menú */
+    .button:after {
+        border-bottom: 2px solid #f1bc29;
+        border-top: 2px solid #dfcc25;
+        content: '';
+        display: block;
+        height: 4px;
+        position: absolute;
+        right: 20px;
+        top: 22px;
+        width: 20px;
+    }
+
+    /* Estilos para el ícono de menú móvil antes de abrir el menú */
+    .button:before {
+        background: rgb(195,144,34);
+        background: linear-gradient(0deg, rgba(195,144,34,1) 0%, rgba(253,120,45,1) 100%);
+        content: '';
+        display: block;
+        height: 2px;
+        position: absolute;
+        right: 20px;
+        top: 16px;
+        transition: all .3s ease;
+        width: 20px;
+    }
+
+    /* Estilos para el ícono de menú móvil después de abrir el menú */
+    .button.menu-opened:after {
+        background: rgb(195,144,34);
+         background: linear-gradient(0deg, rgba(195,144,34,1) 0%, rgba(253,120,45,1) 100%);
+        border: 0;
+        height: 2px;
+        top: 23px;
+        transform: rotate(45deg);
+        transition: all .3s ease;
+        width: 19px;
+    }
+
+    /* Estilos para el ícono de menú móvil después de abrir el menú */
+    .button.menu-opened:before {
+        background-color: #e99f00;
+        top: 23px;
+        width: 19px;
+        transform: rotate(-45deg);
+    }
+
+    /* Estilos para el botón de menú en dispositivos móviles cuando el menú está abierto */
+    #cssmenu .submenu-button {
+        border-left: 1px solid #444444;
+        cursor: pointer;
+        display: block;
+        height: 46px;
+        position: absolute;
+        right: 0;
+        top: 0;
+        width: 46px;
+        z-index: 99;
+    }
+
+    /* Estilos para el botón de menú en dispositivos móviles cuando el submenú está abierto */
+    #cssmenu .submenu-button.submenu-opened {
+        background-color: #262626
+    }
+
+    /* Estilos para los botones de submenú en dispositivos móviles */
+    #cssmenu ul ul .submenu-button {
+        height: 34px;
+        width: 34px;
+    }
+
+    /* Estilos para los indicadores de submenú en los submenús en dispositivos móviles */
+    #cssmenu .submenu-button:after {
+        background-color: #ebb914;
+        content: '';
+        display: block;
+        height: 2px;
+        position: absolute;
+        right: 19px;
+        top: 22px;
+        width: 8px;
+    }
+
+    /* Estilos para los indicadores de submenú en los submenús en dispositivos móviles */
+    #cssmenu ul ul .submenu-button:after {
+        right: 13px;
+        top: 15px;
+    }
+
+    /* Estilos para el indicador de submenú cuando el submenú está abierto en dispositivos móviles */
+    #cssmenu .submenu-button.submenu-opened:after {
+        background-color: #ffffff;
+    }
+
+    /* Estilos para los indicadores de submenú en los submenús en dispositivos móviles */
+    #cssmenu .submenu-button:before {
+        background-color: #dddddd;
+        content: '';
+        display: block;
+        height: 8px;
+        position: absolute;
+        right: 22px;
+        top: 19px;
+        width: 2px;
+    }
+
+    /* Estilos para los indicadores de submenú en los submenús en dispositivos móviles */
+    #cssmenu ul ul .submenu-button:before { 
+        right: 16px;
+        top: 12px;
+    }
+
+    /* Estilos para el indicador de submenú cuando el submenú está abierto en dispositivos móviles */
+    #cssmenu .submenu-button.submenu-opened:before {
+        display: none;
+    }
+}
+
+  

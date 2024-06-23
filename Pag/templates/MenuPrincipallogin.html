@@ -1,0 +1,158 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="" />
+    <script src="https://www.paypal.com/sdk/js?client-id=AZ4GaUz8xtygI8ylwKPfo_Gt4nQB2lMkCaMG65x34nhrnJ40TxbPE0YdiQKVnFzAlOmEoDpeoXALVt8i"></script>
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+
+    <title>Ferremas</title>
+</head>
+
+<body>
+    <div class="container-fluid mainContainer">
+        <!-- MENÚ -->
+        <nav class="navbar navbar-expand-md navbar-dark">
+            <a class="navbar-brand" href="{% url 'MenuPrincipalLogin' %}">Ferremas</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="collapsibleNavbar">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'Herramientas' %}">Herramientas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'MenuPrincipal' %}">Cerrar Sesión</a>
+                    </li>
+                    <!-- Enlace al carrito existente -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">
+                            Carrito <i class="fa-solid fa-cart-shopping"></i>
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <!-- Nuevo contenido del carrito -->
+                            <button type="button" class="dropdown-item" data-toggle="modal" data-target="#cart">Ver Carrito (<span class="total-count"></span>)</button>
+                            <button class="dropdown-item clear-cart">Vaciar Carrito</button>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <!-- INTRODUCCION TIENDA -->
+        <div class="row legend">
+            <div class="col legend__text">
+                <header class="introText">
+                    <h1 class="introText__heading">
+                        Herramientas <span>de gran </span>calidad <span>para un trabajo de</span> gran calidad.
+                    </h1>
+                    <p class="introText__link">
+                        <a href="{% url 'Herramientas' %}">Mira nuestros productos</a>
+                    </p>
+                </header>
+            </div>
+        </div>
+    </div>
+
+    <!-- PRODUCTOS -->
+
+    <div class="container">
+        <div class="row">
+            {% for producto in productos %}
+            <div class="col">
+                <div class="card">
+                    <img class="card-img-top" src="{{ producto.imagen.url }}" alt="{{ producto.nombre_prod }}" onclick="showDetails('details-{{ producto.id_prod }}')">
+                    <div class="card-block">
+                        <h4 class="card-title">{{ producto.nombre_prod }}</h4>
+                        <p class="card-text">Precio: ${{ producto.precio }}</p>
+                        <a href="#" data-name="{{ producto.nombre_prod }}" data-price="{{ producto.precio }}" data-count="1" class="add-to-cart btn btn-primary">Agregar al carrito</a>
+            
+                        <!-- Detalles adicionales ocultos por defecto -->
+                        <button class="rounded-circle btn btn-warning" onclick="showDetails('details-{{ producto.id_prod }}')" data-details="details-{{ producto.id_prod }}">+</button>
+                        <br>
+                        <div class="additional-details" id="details-{{ producto.id_prod }}" style="display: none;">
+                            <!-- Agrega aquí los detalles adicionales del producto -->
+                            <p>{{ producto.descripcion }}</p>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>       
+    </div>
+    
+    <!-- Modal -->
+    <div class="modal fade" id="cart" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Carrito</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <table class="show-cart table">
+
+                    </table>
+                    <div>Total: $<span class="total-cart"></span></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-primary">
+                        <!--PayPal-->
+    <DIV id="paypal-button-container"></DIV>
+    <script>
+        var plata = "3000"; //esta variable debe ser propia
+        paypal.Buttons({
+            style: {
+                color: "silver",
+                shape: "pill",
+                label: "paypal",
+            },
+            createOrder: function (data, actions) {
+                return actions.order.create({
+                    purchase_units: [{
+                        amount: {
+                            value: plata
+                        }
+                    }]
+                })
+            },
+            onApprove: function (data, actions) {
+                actions.order.capture().then(function (detalles) {
+                    document.getElementById("submit").disabled = false
+
+                })
+            },
+
+            onCancel: function (data) {
+                alert("Pago cancelado")
+                console.log(data);
+            },
+        }).render('#paypal-button-container');
+    </script>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="{% static 'javascript/carritoprincipal.js' %}"></script>
+</body>
+
+</html>

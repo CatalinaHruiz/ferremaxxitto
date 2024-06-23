@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tienda Online</title>
+  
+    <link rel="stylesheet" href="{% static 'css/inicioseccion.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+</head>
+<body>
+
+<div class="container" id="container">
+    <!--Olvido Contraseña-->
+    <div class="form-container sign-in-container">
+        <form action="#">
+            <h1>¿Olvidaste tu contraseña? 😟 </h1>
+            <span>No te preocupes puedes cambiarla, responde la pregunta de seguridad🤗 </span>
+            <input type="email" placeholder="Correo electrónico" />
+            <select >
+                <option selected>Selecciona una pregunta de Seguridad</option>
+                <option value="1">One</option>
+                <option value="2">Two</option>
+                <option value="3">Three</option>
+            </select>
+            <input type="text" placeholder="Respuesta de Seguridad " />
+            <input type="password" placeholder="Nueva Contraseña" />
+            <input type="password" placeholder="Repite tu nueva Contraseña" />
+            <a href="{% url 'Sesion' %}"> Volver a Inicio de sesión </a>
+        
+            <button>Cambiar Contraseña</button>
+        </form>
+    </div>
+    <!--Fin del formulario de Olvido Contraseña-->
+
+    <!--Interfaces de Hola constructor-->
+    <div class="overlay-container">
+        <div class="overlay">
+            <div class="overlay-panel overlay-right">
+                <h1>¡ Hola Constructor ! 🔨</h1>
+                <p>Si olvidaste tu contraseña, puedes cambiarla aquí.</p>
+            </div>
+        </div>
+    </div>
+    <!--Fin Interfaces de Hola constructor-->
+</div>
+
+<footer>
+    <p>&copy; 2024 Tienda Online. Todos los derechos reservados.</p>
+</footer>
+
+</body>
+</html>
