@@ -1,11 +1,24 @@
 from django.http import HttpResponse
 from django.shortcuts import render,redirect
+from django.views.decorators.csrf import csrf_exempt
 from .models import pregunta,usuario,rol,categoria,producto
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import check_password
 from django.contrib.auth import authenticate, login , logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib import messages
+import random
+import requests
+import datetime as dt
+import json
+from django.http import JsonResponse
+from django.shortcuts import render
+from transbank.common.options import WebpayOptions
+from transbank.common.integration_commerce_codes import IntegrationCommerceCodes
+from transbank.common.integration_api_keys import IntegrationApiKeys 
+from transbank.error.transbank_error import TransbankError
+from transbank.webpay.webpay_plus.transaction import Transaction 
+
 
 # Create your views here.
 def mostrarhome(request):
@@ -49,7 +62,10 @@ def mostrarproducto(request,id_prod):
     productos = producto.objects.get(id_prod=id_prod)
     categorias = categoria.objects.all()
     return render(request,'modificarproducto.html',{'productos':productos,'categorias':categorias})
-
+def error(request):
+    return render(request, 'transbank/error.html')
+def rechazo(request):
+    return render(request, 'transbank/rechazada.html')
 
 
 #FUNCIONES DEL USUARIO
@@ -120,7 +136,144 @@ def iniciarsesion(request):
 
 def finsesion(request):
     logout(request)
-    return redirect('MenuPrincipal')  
+    return redirect('MenuPrincipal')
+
+
+def add_algo(request):
+    print('add_producto')   
+    url = 'http://127.0.0.1:8000/api/nada'
+    try:    
+
+
+            my_list = []
+
+            if 'diccionario' in request.POST:
+
+                my_list = request.POST['diccionario']
+
+
+            json = {
+                    "nada": my_list,
+
+                }
+
+            print(json)
+            response = requests.post(url, json=json)
+            response.encoding = 'utf-8' 
+            print('response code: {0}'.format(response.status_code))
+            print('response body -> {0}'.format(response.json()))
+
+    except Exception as e:
+        print("ERROR INVOCACIÓN SERVICIO : {0}, {1}".format(url, e))   
+
+
+
+def delete_algo():
+    print('delete_algo')   
+    url = 'http://127.0.0.1:8000/api/nada'
+    try:
+        response = requests.delete(url)
+        print('response code: {0}'.format(response.status_code))
+        print('response code: {0}'.format(response.text))
+    except Exception as e:
+        print("ERROR INVOCACIÓN SERVICIO : {0}, {1}".format(url, e)) 
+
+
+"""   Webpay  """ 
+def webpay_plus_create(request):
+    print("Webpay Plus Transaction.create")
+    buy_order = str(random.randrange(1000000, 99999999))
+    session_id = str(random.randrange(1000000, 99999999))
+    amount = request.POST.get('total')
+    return_url = 'http://localhost:8000/commit-webpay'  # Asegúrate de que sea la URL correcta
+
+    tx = Transaction(WebpayOptions(IntegrationCommerceCodes.WEBPAY_PLUS, IntegrationApiKeys.WEBPAY))
+    response = tx.create(buy_order, session_id, amount, return_url)
+
+    if response:
+        return redirect(response['url'])
+    else:
+        return render(request, 'transbank/error.html')
+
+@csrf_exempt
+def webpay_checkout(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        cart = data['cart']
+        total = data['total']
+
+        # Crear transacción Webpay
+        buy_order = str(random.randrange(1000000, 99999999))
+        session_id = str(random.randrange(1000000, 99999999))
+        return_url = 'http://localhost:8000/commit-webpay'  # Asegúrate de que sea la URL correcta
+
+        tx = Transaction(WebpayOptions(IntegrationCommerceCodes.WEBPAY_PLUS, IntegrationApiKeys.WEBPAY))
+        response = tx.create(buy_order, session_id, total, return_url)
+
+        if response:
+            # Guardar datos del carrito y transacción en sesión o base de datos si es necesario
+            request.session['cart'] = cart
+            request.session['buy_order'] = buy_order
+            request.session['session_id'] = session_id
+            return JsonResponse({'success': True, 'url': response['url']})
+        else:
+            return JsonResponse({'success': False, 'error': 'No se pudo crear la transacción'})
+
+@csrf_exempt
+def webpay_plus_commit(request):
+    print('commitpay')
+    print("request: {0}".format(request.POST))    
+    token = request.GET.get('token_ws')
+
+    TBK_TOKEN = request.POST.get('TBK_TOKEN')
+    TBK_ID_SESION = request.POST.get('TBK_ID_SESION')
+    TBK_ORDEN_COMPRA = request.POST.get('TBK_ORDEN_COMPRA')
+
+    # TRANSACCIÓN REALIZADA
+    if TBK_TOKEN is None and TBK_ID_SESION is None and TBK_ORDEN_COMPRA is None and token is not None:
+
+        # APROBAR TRANSACCIÓN
+        tx = Transaction(WebpayOptions(IntegrationCommerceCodes.WEBPAY_PLUS, IntegrationApiKeys.WEBPAY))
+        response = tx.commit(token=token)
+        print("response: {}".format(response)) 
+
+        status = response.get('status')
+        print("status: {0}".format(status))
+        response_code = response.get('response_code')
+        print("response_code: {0}".format(response_code)) 
+
+        # TRANSACCIÓN APROBADA
+        if status == 'AUTHORIZED' and response_code == 0:
+            state = 'Aceptado' if response.get('status') == 'AUTHORIZED' else ''
+            pay_type = 'Tarjeta de Débito' if response.get('payment_type_code') == 'VD' else ''
+            amount = f"{int(response.get('amount')):,.0f}".replace(',', '.')
+            transaction_date = dt.strptime(response.get('transaction_date'), '%Y-%m-%dT%H:%M:%S.%fZ')
+            transaction_date = transaction_date.strftime('%d-%m-%Y %H:%M:%S')
+            
+            transaction_detail = {
+                'card_number': response.get('card_detail').get('card_number'),
+                'transaction_date': transaction_date,
+                'state': state,
+                'pay_type': pay_type,
+                'amount': amount,
+                'authorization_code': response.get('authorization_code'),
+                'buy_order': response.get('buy_order'),
+            }
+
+            # Obtener el carrito de la sesión
+            cart = request.session.get('cart', [])
+            # Eliminar datos de la sesión
+            delete_algo()
+
+            return render(request, 'transbank/commit.html', {'transaction_detail': transaction_detail})
+        else:
+            # TRANSACCIÓN RECHAZADA
+            delete_algo()
+            return render(request, 'transbank/rechazada.html')
+    else:
+        # TRANSACCIÓN CANCELADA
+        delete_algo()
+        return render(request, 'transbank/error.html')
 
 # FIN ACCIONES USUARIO
 

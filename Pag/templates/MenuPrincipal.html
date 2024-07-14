@@ -105,18 +105,21 @@
                     </table>
                     <div>Total: $<span class="total-cart"></span></div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                    <button type="button" class="btn btn-primary">
-                        <!--PayPal-->
-                        <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12">
-                            <div class="payment" style="padding: 10px; margin:auto;">
+                <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12">
+                    <div class="payment" style="padding: 10px; margin:auto;">
                                 <h3>Medios de pago:</h3>
                                 <span>
-                                    <img src="{% static 'img/webpay.png' %}" alt="" width="150"/>
+                                    <img src="{% static 'css/webpay.png' %}" alt="" width="150"/>
                                 </span> 
                             </div>
                         </div>
+                        <nav class="navbar navbar-expand-md navbar-dark">
+                            <!-- ... -->
+                            <!-- Enlace al carrito existente -->
+                            <li class="nav-item">
+                                <button id="checkout-btn" class="nav-link btn btn-primary">Pagar con WebPay</button>
+                            </li>
+                        </nav>
                 
 
 
@@ -125,42 +128,6 @@
 
 
 
-    <DIV id="paypal-button-container"></DIV>
-    <script>
-        var plata = "3000"; //esta variable debe ser propia
-        paypal.Buttons({
-            style: {
-                color: "silver",
-                shape: "pill",
-                label: "paypal",
-            },
-            createOrder: function (data, actions) {
-                return actions.order.create({
-                    purchase_units: [{
-                        amount: {
-                            value: plata
-                        }
-                    }]
-                })
-            },
-            onApprove: function (data, actions) {
-                actions.order.capture().then(function (detalles) {
-                    document.getElementById("submit").disabled = false
-
-                })
-            },
-
-            onCancel: function (data) {
-                alert("Pago cancelado")
-                console.log(data);
-            },
-        }).render('#paypal-button-container');
-    </script>
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
 
     
 

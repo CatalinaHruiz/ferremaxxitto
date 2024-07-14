@@ -1,0 +1,46 @@
+
+<div class="container" style="background-color: gray; border-radius: 10px; margin-top: 50px; margin-bottom: 50px; max-width: 400px;">
+    <table class="table">
+        <caption id="list-det-form" style="color: white;">Boleta</caption>
+        <thead id="head-form">
+            <tr>
+                <th style="color: white;" scope="col"></th>
+                <th style="color: white;" scope="col"></th>
+            </tr>
+        </thead>
+        <tbody  id="lista-form">
+            <tr>
+                <td style="color: white;"><strong>Estado:</strong></td>
+                <td style="color: white;">{{transaction_detail.state}}</td>      
+            </tr>
+            <tr>
+                <td style="color: white;"><strong>Fecha:</strong></td>
+                <td style="color: white;">{{transaction_detail.transaction_date}}</td>      
+            </tr>
+            <tr>
+                <td style="color: white;"><strong>N° de tarjeta:</strong></td>
+                <td style="color: white;">XXXX XXXX XXXX {{transaction_detail.card_number}}</td>      
+            </tr>
+            <tr>
+                <td style="color: white;"><strong>Comprobante:</strong></td>
+                <td style="color: white;">{{transaction_detail.authorization_code}}</td>      
+            </tr>
+            <tr>
+                <td style="color: white;"><strong>Tipo de pago:</strong></td>
+                <td style="color: white;">{{transaction_detail.pay_type}}</td>      
+            </tr>
+            <tr>
+                <td style="color: white;"><strong>Monto pagado:</strong></td>
+                <td style="color: white;">{{transaction_detail.amount}}</td>      
+            </tr>
+            <tr>
+                <td style="color: white;"><strong>Nº de orden:</strong></td>
+                <td style="color: white;">{{transaction_detail.buy_order}}</td>      
+            </tr>
+
+
+
+        </tbody>
+    </table>
+
+</div>

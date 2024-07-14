@@ -94,44 +94,7 @@
                     </table>
                     <div>Total: $<span class="total-cart"></span></div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                    <button type="button" class="btn btn-primary">
-                        Comprar
-                        <!--PayPal-->
-    <DIV id="paypal-button-container"></DIV>
-    <script>
-        var plata = "{{ venta.total }}"; //esta variable debe ser propia
-        paypal.Buttons({
-            style: {
-                color: "silver",
-                shape: "pill",
-                label: "paypal",
-            },
-            createOrder: function (data, actions) {
-                return actions.order.create({
-                    purchase_units: [{
-                        amount: {
-                            value: plata
-                        }
-                    }]
-                })
-            },
-            onApprove: function (data, actions) {
-                actions.order.capture().then(function (detalles) {
-                    document.getElementById("submit").disabled = false
-
-                })
-            },
-
-            onCancel: function (data) {
-                alert("Pago cancelado")
-                console.log(data);
-            },
-        }).render('#paypal-button-container');
-    </script>
-                    </button>
-                </div>
+             
             </div>
         </div>
     </div>
