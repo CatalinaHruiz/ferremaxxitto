@@ -23,7 +23,7 @@ body {
 
 .mainContainer {
   background-image: linear-gradient(rgba(59, 59, 59, 0.3), rgba(45, 44, 44, 0.3)),
-    url(Fondo.png);
+    url( https://img.freepik.com/vector-gratis/fondo-azul-acuarela_23-2149320188.jpg?t=st=1718672168~exp=1718675768~hmac=97fd7830390fd5f3d7b253bd8e785a7daa8ea4c51e6259f7e567165af94ecd8e&w=1380);
   background-repeat: repeat;
 }
 
@@ -129,7 +129,7 @@ body {
   margin-top: -600px; 
   margin-bottom: 20px;
   width: 15rem;
-  box-shadow: 2px solid rgb(253, 148, 0);
+  box-shadow: 2px solid rgb(11, 82, 168);
   overflow: hidden;
 }
 .card-img-top {
@@ -146,25 +146,25 @@ body {
 .card-block .add-to-cart {
   margin-top: 10px;
   margin-bottom: 10px;
-  background-color: rgb(234, 128, 0);
+  background-color:rgb(48, 141, 255);
   border: none;
   border-radius: 15px;
   color: white;
   transition: all 0.3s ease;
 }
 .add-to-cart.btn {
-  background-color: orange;
-  border-color: orange; /* Para que el borde también sea naranja */
+  background-color:rgb(119, 180, 253);
+  border-color:rgb(48, 141, 255); /* Para que el borde también sea naranja */
   color: white; /* Para asegurar que el texto sea legible */
 }
 .btn-primary {
-  background-color: orange;
-  border-color: orange; /* Para que el borde también sea naranja */
+  background-color:rgb(119, 180, 253);
+  border-color:rgb(48, 141, 255); /* Para que el borde también sea naranja */
   color: white; /* Para asegurar que el texto sea legible */
 }
 
 .card-block .add-to-cart:hover {
-  background-color: darkorange; /* Color de fondo más oscuro al pasar el mouse */
+  background-color:rgb(48, 141, 255); /* Color de fondo más oscuro al pasar el mouse */
 }
 
  /* Dropdown bar estilo */
@@ -201,4 +201,18 @@ body {
   height: 38px; /* Ajusta la altura del campo de entrada */
   width: 70px; /* Ajusta el ancho del campo de entrada */
   text-align: center; /* Centra el texto dentro del campo */
+}
+footer {
+  background-color: #222;
+  color: #f0f0f0;
+  font-size: 14px;
+  bottom: 0;
+  position: fixed;
+  left: 0;
+  right: 0;
+  text-align: center;
+  z-index: 999;
+}
+footer p {
+  margin: 10px 0;
 }
