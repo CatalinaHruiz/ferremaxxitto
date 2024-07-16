@@ -1,4 +1,5 @@
 from django.http import HttpResponse
+from django.http import HttpResponseBadRequest
 from django.shortcuts import render,redirect
 from django.views.decorators.csrf import csrf_exempt
 from .models import pregunta,usuario,rol,categoria,producto
@@ -18,7 +19,8 @@ from transbank.common.integration_commerce_codes import IntegrationCommerceCodes
 from transbank.common.integration_api_keys import IntegrationApiKeys 
 from transbank.error.transbank_error import TransbankError
 from transbank.webpay.webpay_plus.transaction import Transaction 
-
+from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib.auth.hashers import make_password
 
 # Create your views here.
 def mostrarhome(request):
@@ -67,43 +69,101 @@ def error(request):
 def rechazo(request):
     return render(request, 'transbank/rechazada.html')
 
+def olvidocontraseña(request):
+    return render(request, 'olvidocontraseña.html')
 
+def password_recovery_view(request):
+    preguntas = pregunta.objects.all()  # Asegúrate de que las preguntas se obtengan correctamente
+    return render(request, 'olvidocontraseña.html', {'preguntas': preguntas})  # Ruta correcta
+#FUNCIONES DEL recuperar contraseñav
+def recover_password(request):
+    if request.method == 'POST':
+        correo_usu = request.POST['correo_usu']
+        id_preg = request.POST['id_preg']
+        respuesta_preg = request.POST['respuesta_preg']
+        nueva_contrasena = request.POST['nueva_contrasena']
+        repite_nueva_contrasena = request.POST['repite_nueva_contrasena']
+
+        if nueva_contrasena != repite_nueva_contrasena:
+            error = 'Las contraseñas no coinciden.'
+            preguntas = pregunta.objects.all()
+            return render(request, 'olvidocontraseña.html', {'preguntas': preguntas, 'error': error})
+
+        try:
+            user = usuario.objects.get(correo_usu=correo_usu, id_preg=id_preg)
+            if user.respuesta_preg == respuesta_preg:
+                user.contrasena_usu = make_password(nueva_contrasena)
+                user.save()
+                return redirect('password_recovery_success')  # Redirige a una página de éxito
+            else:
+                error = 'Respuesta incorrecta'
+        except usuario.DoesNotExist:
+            error = 'Usuario o pregunta de seguridad incorrectos'
+
+        preguntas = pregunta.objects.all()
+        return render(request, 'olvidocontraseña.html', {'preguntas': preguntas, 'error': error})
+
+    preguntas = pregunta.objects.all()
+    return render(request, 'olvidocontraseña.html', {'preguntas': preguntas})
+
+def password_recovery_success(request):
+    return render(request, 'password_recovery_success.html')
 #FUNCIONES DEL USUARIO
-
 def registrar(request):
-    rutU = request.POST['rut']
-    nombreU = request.POST['name']
-    direccionU = request.POST['direccion']
-    correoU = request.POST['correo']
-    contrasenaU = request.POST['password']
-    telefonoU = request.POST['telefono']
-    preguntaU = request.POST['pregunta']
-    respuestaU = request.POST['rs']
+    if request.method == 'POST':
+        # Obtener datos del formulario
+        rutU = request.POST.get('rut', '')
+        nombreU = request.POST.get('name', '')
+        direccionU = request.POST.get('direccion', '')
+        correoU = request.POST.get('correo', '')
+        contrasenaU = request.POST.get('password', '')
+        telefonoU = request.POST.get('telefono', '')
+        preguntaU = request.POST.get('pregunta', '')
+        respuestaU = request.POST.get('rs', '')
 
-    # Verificar si el correo electrónico ya está registrado
-    
-    if User.objects.filter(email=correoU).exists():
-        return render(request, 'correo_registrado.html')  # Renderiza la plantilla con el modal
-    
+        # Validar que todos los campos requeridos estén presentes
+        if not rutU or not nombreU or not direccionU or not correoU or not contrasenaU or not telefonoU or not preguntaU or not respuestaU:
+            return HttpResponseBadRequest('Todos los campos son obligatorios')
 
-    user = User.objects.create_user(username = correoU,
-                                    email= correoU,
-                                    password= contrasenaU)
-    if "@ferremax.com" in correoU:
-        user.is_staff = True    
-        roluser = rol.objects.get(nombre_rol = "Administrador")
-    else:
-        user.is_staff = False
-        roluser = rol.objects.get(nombre_rol = "Cliente")
-    registroPreg = pregunta.objects.get(id_preg = preguntaU)
-    
-    usuario.objects.create(rut_usu = rutU,nombre_usu = nombreU,correo_usu = correoU,
-                           contrasena_usu = contrasenaU,direccion_usu = direccionU,telefono_usu = telefonoU ,
-                           rol_usu = roluser, id_preg = registroPreg)
-    
-    user.is_active = True
-    user.save()
-    return redirect('Sesion')
+        # Verificar si el correo electrónico ya está registrado
+        if User.objects.filter(email=correoU).exists():
+            return render(request, 'correo_registrado.html')  # Renderiza la plantilla con el modal de correo registrado
+
+        try:
+            # Crear usuario en Django
+            user = User.objects.create_user(username=correoU, email=correoU, password=contrasenaU)
+
+            # Determinar el rol del usuario según el dominio del correo
+            if "@ferremax.com" in correoU:
+                user.is_staff = True    
+                roluser = rol.objects.get(nombre_rol="Administrador")
+            else:
+                user.is_staff = False
+                roluser = rol.objects.get(nombre_rol="Cliente")
+
+            # Obtener la pregunta de seguridad seleccionada
+            registroPreg = pregunta.objects.get(id_preg=preguntaU)
+
+            # Crear el objeto usuario en tu modelo personalizado
+            usuario.objects.create(rut_usu=rutU, nombre_usu=nombreU, correo_usu=correoU,
+                                   contrasena_usu=contrasenaU, direccion_usu=direccionU, telefono_usu=telefonoU,
+                                   rol_usu=roluser, id_preg=registroPreg, respuesta_preg=respuestaU)
+
+            # Guardar usuario y redirigir según el rol
+            user.is_active = True
+            user.save()
+            
+            if user.is_staff:
+                return redirect('Vendedor')
+            else:
+                return redirect('MenuPrincipalLogin')
+
+        except pregunta.DoesNotExist:
+            return HttpResponseBadRequest('La pregunta de seguridad seleccionada no es válida')
+
+    # Si el método no es POST, probablemente estés mostrando el formulario vacío
+    preguntas = pregunta.objects.all()
+    return render(request, 'registro.html', {'preguntas': preguntas})
 
 def iniciarsesion(request):
     usuario1 = request.POST['correo']

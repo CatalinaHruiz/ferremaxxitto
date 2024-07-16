@@ -1,10 +1,11 @@
 from django.contrib import admin
+from . import views
 from django.urls import path
 from .views import (
     mostrarhome, mostrarcarrito, mostrarherramientas, mostrarinicio, mostrarvendedor,
     iniciarsesion, registrar, finsesion, mostraragregar, agregarproducto, eliminarproducto,
     modificarproducto, mostrarproducto, mostrarnuevotrabajador, mostrarmenulogin,
-    webpay_plus_create, webpay_plus_commit, error, rechazo
+    webpay_plus_create, webpay_plus_commit, error, rechazo,olvidocontraseña
 )
 
 urlpatterns = [
@@ -27,4 +28,6 @@ urlpatterns = [
     path('commit-webpay/', webpay_plus_commit, name='commit-webpay'),  # Asegúrate de que la URL termine con '/'
     path('error-compra/', error, name='error-compra'),
     path('compra-rechazada/', rechazo, name='compra-rechazada'),
+    path('recuperar_contrasena/', olvidocontraseña, name='recover_password'),
+    path('password_recovery_success/', views.password_recovery_success, name='password_recovery_success'),
 ]
