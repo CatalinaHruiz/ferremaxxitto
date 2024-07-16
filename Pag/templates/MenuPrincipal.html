@@ -104,32 +104,29 @@
 
                     </table>
                     <div>Total: $<span class="total-cart"></span></div>
+
+                        <!-- Formulario para pago con WebPay -->
+
+    <form id="form" method="POST" action="{% url 'create-webpay' %}">
+        {% csrf_token %}
+ 
+        <input type="hidden" name="descripcion" value="Pago de productos en Ferremas">
+         <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12">
+            <div class="payment" style="padding: 10px; margin:auto;">
+                <h3>Medios de pago:</h3>
+                <span>
+                    <img src="{% static 'css/webpay.png' %}" alt="" width="150"/>
+                </span> 
+            </div>
+        </div>
+        <button type="submit" id="checkout-btn" class="btn btn-primary">Pagar con WebPay</button>
+    </form>
                 </div>
-                <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12">
-                    <div class="payment" style="padding: 10px; margin:auto;">
-                                <h3>Medios de pago:</h3>
-                                <span>
-                                    <img src="{% static 'css/webpay.png' %}" alt="" width="150"/>
-                                </span> 
-                            </div>
-                        </div>
-                        <nav class="navbar navbar-expand-md navbar-dark">
-                            <!-- ... -->
-                            <!-- Enlace al carrito existente -->
-                            <li class="nav-item">
-                                <button id="checkout-btn" class="nav-link btn btn-primary">Pagar con WebPay</button>
-                            </li>
-                        </nav>
-                
+            </div>
+        </div>
+    </div>
 
 
-
-
-
-
-
-
-    
 
     <!-- Scripts -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

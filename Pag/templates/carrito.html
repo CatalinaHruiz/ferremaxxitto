@@ -58,103 +58,69 @@
 
     <!-- Agrega la referencia al archivo JavaScript de Bootstrap -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
     <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const addToCartButtons = document.querySelectorAll('.add-to-cart-btn');
-        const cartItemsContainer = document.getElementById('cart-items');
-        const cartTotalElement = document.getElementById('cart-total');
-        const checkoutButton = document.getElementById('checkout-btn');
+        document.addEventListener('DOMContentLoaded', function () {
+            const addToCartButtons = document.querySelectorAll('.add-to-cart-btn');
+            const cartItemsContainer = document.getElementById('cart-items');
+            const cartTotalElement = document.getElementById('cart-total');
 
-        let cartItems = [];
+            let cartItems = [];
 
-        addToCartButtons.forEach(button => {
-            button.addEventListener('click', function () {
-                const product = this.parentNode;
-                const productId = product.getAttribute('data-id');
-                const productName = product.getAttribute('data-name');
-                const productPrice = parseFloat(product.getAttribute('data-price'));
+            addToCartButtons.forEach(button => {
+                button.addEventListener('click', function () {
+                    const product = this.parentNode;
+                    const productId = product.getAttribute('data-id');
+                    const productName = product.getAttribute('data-name');
+                    const productPrice = parseFloat(product.getAttribute('data-price'));
 
-                addToCart(productId, productName, productPrice);
-            });
-        });
-
-        function addToCart(productId, productName, productPrice) {
-            const existingItem = cartItems.find(item => item.id === productId);
-
-            if (existingItem) {
-                existingItem.quantity++;
-            } else {
-                cartItems.push({
-                    id: productId,
-                    name: productName,
-                    price: productPrice,
-                    quantity: 1
+                    addToCart(productId, productName, productPrice);
                 });
-            }
-
-            renderCart();
-        }
-
-        function renderCart() {
-            cartItemsContainer.innerHTML = '';
-            let totalPrice = 0;
-
-            cartItems.forEach((item, index) => {
-                const itemTotal = item.price * item.quantity;
-                totalPrice += itemTotal;
-
-                const itemElement = document.createElement('li');
-                itemElement.textContent = `${item.name} x ${item.quantity} - $${itemTotal.toFixed(0)} CLP`;
-
-                const deleteButton = document.createElement('button');
-                deleteButton.textContent = 'Eliminar';
-                deleteButton.addEventListener('click', function () {
-                    cartItems.splice(index, 1);
-                    renderCart();
-                });
-
-                itemElement.appendChild(deleteButton);
-                cartItemsContainer.appendChild(itemElement);
             });
 
-            cartTotalElement.textContent = totalPrice.toFixed(0);
-        }
+            function addToCart(productId, productName, productPrice) {
+                const existingItem = cartItems.find(item => item.id === productId);
 
-        checkoutButton.addEventListener('click', function () {
-            fetch('/webpay/checkout', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': getCookie('csrftoken') // Necesitas manejar el token CSRF si estás usando Django.
-                },
-                body: JSON.stringify({ cart: cartItems, total: cartTotalElement.textContent })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    window.location.href = data.url;
+                if (existingItem) {
+                    existingItem.quantity++;
                 } else {
-                    alert('Error en el proceso de pago.');
+                    cartItems.push({
+                        id: productId,
+                        name: productName,
+                        price: productPrice,
+                        quantity: 1
+                    });
                 }
-            });
-        });
 
-        function getCookie(name) {
-            let cookieValue = null;
-            if (document.cookie && document.cookie !== '') {
-                const cookies = document.cookie.split(';');
-                for (let i = 0; i < cookies.length; i++) {
-                    const cookie = cookies[i].trim();
-                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                        break;
-                    }
-                }
+                renderCart();
             }
-            return cookieValue;
-        }
-    });
-</script>
+
+            function renderCart() {
+                cartItemsContainer.innerHTML = '';
+                let totalPrice = 0;
+
+                cartItems.forEach((item, index) => {
+                    const itemTotal = item.price * item.quantity;
+                    totalPrice += itemTotal;
+
+                    const itemElement = document.createElement('li');
+                    itemElement.textContent = `${item.name} x ${item.quantity} - $${itemTotal.toFixed(0)} CLP`;
+                    
+                    const deleteButton = document.createElement('button');
+                    deleteButton.textContent = 'Eliminar';
+                    deleteButton.addEventListener('click', function() {
+                        cartItems.splice(index, 1);
+                        renderCart();
+                    });
+                    
+                    itemElement.appendChild(deleteButton);
+                    cartItemsContainer.appendChild(itemElement);
+                });
+
+                cartTotalElement.textContent = totalPrice.toFixed(0);
+            }
+        });
+    </script>
 
 </body>
 <footer>

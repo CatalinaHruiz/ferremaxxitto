@@ -139,53 +139,54 @@ def finsesion(request):
     return redirect('MenuPrincipal')
 
 
+@csrf_exempt
 def add_algo(request):
-    print('add_producto')   
-    url = 'http://127.0.0.1:8000/api/nada'
-    try:    
-
-
-            my_list = []
-
-            if 'diccionario' in request.POST:
-
-                my_list = request.POST['diccionario']
-
-
-            json = {
-                    "nada": my_list,
-
-                }
-
-            print(json)
-            response = requests.post(url, json=json)
-            response.encoding = 'utf-8' 
-            print('response code: {0}'.format(response.status_code))
-            print('response body -> {0}'.format(response.json()))
-
-    except Exception as e:
-        print("ERROR INVOCACIÓN SERVICIO : {0}, {1}".format(url, e))   
-
-
-
-def delete_algo():
-    print('delete_algo')   
+    print('add_producto')
     url = 'http://127.0.0.1:8000/api/nada'
     try:
-        response = requests.delete(url)
-        print('response code: {0}'.format(response.status_code))
-        print('response code: {0}'.format(response.text))
-    except Exception as e:
-        print("ERROR INVOCACIÓN SERVICIO : {0}, {1}".format(url, e)) 
+        if request.method == 'POST':
+            my_list = request.POST.getlist('diccionario', [])
+            json_data = {"nada": my_list}
+
+            print(json_data)
+            response = requests.post(url, json=json_data)
+            response.encoding = 'utf-8'
+            print('response code: {0}'.format(response.status_code))
+            print('response body -> {0}'.format(response.json()))
+            
+            return JsonResponse({'status': response.status_code, 'response': response.json()})
+        else:
+            return HttpResponse("Method not allowed", status=405)
+    except requests.exceptions.RequestException as e:
+        print(f"ERROR al hacer la solicitud a {url}: {e}")
+        return JsonResponse({'error': str(e)}, status=500)
+
+@csrf_exempt
+def delete_algo(request):
+    print('delete_algo')
+    url = 'http://127.0.0.1:8000/api/nada'
+    try:
+        if request.method == 'DELETE':
+            response = requests.delete(url)
+            print('response code: {0}'.format(response.status_code))
+            print('response body: {0}'.format(response.text))
+            
+            return JsonResponse({'status': response.status_code, 'response': response.text})
+        else:
+            return HttpResponse("Method not allowed", status=405)
+    except requests.exceptions.RequestException as e:
+        print(f"ERROR al hacer la solicitud DELETE a {url}: {e}")
+        return JsonResponse({'error': str(e)}, status=500)
 
 
 """   Webpay  """ 
+
 def webpay_plus_create(request):
     print("Webpay Plus Transaction.create")
     buy_order = str(random.randrange(1000000, 99999999))
     session_id = str(random.randrange(1000000, 99999999))
     amount = request.POST.get('total')
-    return_url = 'http://localhost:8000/commit-webpay'  # Asegúrate de que sea la URL correcta
+    return_url = 'http://localhost:8000/webpay/commit'
 
     tx = Transaction(WebpayOptions(IntegrationCommerceCodes.WEBPAY_PLUS, IntegrationApiKeys.WEBPAY))
     response = tx.create(buy_order, session_id, amount, return_url)
@@ -194,7 +195,7 @@ def webpay_plus_create(request):
         return redirect(response['url'])
     else:
         return render(request, 'transbank/error.html')
-
+    
 @csrf_exempt
 def webpay_checkout(request):
     if request.method == 'POST':
@@ -205,7 +206,7 @@ def webpay_checkout(request):
         # Crear transacción Webpay
         buy_order = str(random.randrange(1000000, 99999999))
         session_id = str(random.randrange(1000000, 99999999))
-        return_url = 'http://localhost:8000/commit-webpay'  # Asegúrate de que sea la URL correcta
+        return_url = 'http://localhost:8000/webpay/commit'
 
         tx = Transaction(WebpayOptions(IntegrationCommerceCodes.WEBPAY_PLUS, IntegrationApiKeys.WEBPAY))
         response = tx.create(buy_order, session_id, total, return_url)
@@ -229,10 +230,10 @@ def webpay_plus_commit(request):
     TBK_ID_SESION = request.POST.get('TBK_ID_SESION')
     TBK_ORDEN_COMPRA = request.POST.get('TBK_ORDEN_COMPRA')
 
-    # TRANSACCIÓN REALIZADA
+    #TRANSACCIÓN REALIZADA
     if TBK_TOKEN is None and TBK_ID_SESION is None and TBK_ORDEN_COMPRA is None and token is not None:
 
-        # APROBAR TRANSACCIÓN
+        #APROBAR TRANSACCIÓN
         tx = Transaction(WebpayOptions(IntegrationCommerceCodes.WEBPAY_PLUS, IntegrationApiKeys.WEBPAY))
         response = tx.commit(token=token)
         print("response: {}".format(response)) 
@@ -241,38 +242,42 @@ def webpay_plus_commit(request):
         print("status: {0}".format(status))
         response_code = response.get('response_code')
         print("response_code: {0}".format(response_code)) 
-
-        # TRANSACCIÓN APROBADA
+        #TRANSACCIÓN APROBADA
         if status == 'AUTHORIZED' and response_code == 0:
-            state = 'Aceptado' if response.get('status') == 'AUTHORIZED' else ''
-            pay_type = 'Tarjeta de Débito' if response.get('payment_type_code') == 'VD' else ''
-            amount = f"{int(response.get('amount')):,.0f}".replace(',', '.')
-            transaction_date = dt.strptime(response.get('transaction_date'), '%Y-%m-%dT%H:%M:%S.%fZ')
-            transaction_date = transaction_date.strftime('%d-%m-%Y %H:%M:%S')
-            
-            transaction_detail = {
-                'card_number': response.get('card_detail').get('card_number'),
-                'transaction_date': transaction_date,
-                'state': state,
-                'pay_type': pay_type,
-                'amount': amount,
-                'authorization_code': response.get('authorization_code'),
-                'buy_order': response.get('buy_order'),
-            }
+
+            state = ''
+            if response.get('status') == 'AUTHORIZED':
+                state = 'Aceptado'
+            pay_type = ''
+            if response.get('payment_type_code') == 'VD':
+                pay_type = 'Tarjeta de Débito'
+            amount = int(response.get('amount'))
+            amount = f'{amount:,.0f}'.replace(',', '.')
+            transaction_date = dt.datetime.strptime(response.get('transaction_date'), '%Y-%m-%dT%H:%M:%S.%fZ')
+            transaction_date = '{:%d-%m-%Y %H:%M:%S}'.format(transaction_date)
+            transaction_detail = {  'card_number': response.get('card_detail').get('card_number'),
+                                    'transaction_date': transaction_date,
+                                    'state': state,
+                                    'pay_type': pay_type,
+                                    'amount': amount,
+                                    'authorization_code': response.get('authorization_code'),
+                                    'buy_order': response.get('buy_order'), }
 
             # Obtener el carrito de la sesión
             cart = request.session.get('cart', [])
-            # Eliminar datos de la sesión
+       
+
             delete_algo()
+          
 
             return render(request, 'transbank/commit.html', {'transaction_detail': transaction_detail})
         else:
-            # TRANSACCIÓN RECHAZADA
-            delete_algo()
+        #TRANSACCIÓN RECHAZADA
+            delete_algo()   
             return render(request, 'transbank/rechazada.html')
     else:
-        # TRANSACCIÓN CANCELADA
-        delete_algo()
+    #TRANSACCIÓN CANCELADA
+        delete_algo()              
         return render(request, 'transbank/error.html')
 
 # FIN ACCIONES USUARIO

@@ -8,6 +8,7 @@ from django.apps import apps
 from Pag.models import usuario
 from .serializers import UsuarioSerializer
 from rest_framework.response import Response
+from rest_framework import status
 
 #API VERIFICACION DE CORREO
 # Obténgo el modelo de usuario desde la app `Pag`
@@ -41,3 +42,15 @@ def creausuario(request):
         serializer.save()
         return Response(serializer.data, status=201)
     return Response(serializer.errors, status=400)
+
+
+@api_view(['POST'])
+def api_nada_post(request):
+    data = request.data
+    print(f"Received data: {data}")
+    return Response(data, status=status.HTTP_200_OK)
+
+@api_view(['DELETE'])
+def api_nada_delete(request):
+    print("Delete request received")
+    return Response({"message": "Deleted successfully"}, status=status.HTTP_200_OK)
