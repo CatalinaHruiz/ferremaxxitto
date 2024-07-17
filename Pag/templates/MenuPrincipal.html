@@ -75,7 +75,7 @@
                         <a href="#" data-name="{{ producto.nombre_prod }}" data-price="{{ producto.precio }}" data-count="1" class="add-to-cart btn btn-primary">Agregar al carrito</a>
             
                         <!-- Detalles adicionales ocultos por defecto -->
-                        <button class="rounded-circle btn btn-warning" onclick="showDetails('details-{{ producto.id_prod }}')" data-details="details-{{ producto.id_prod }}">+</button>
+                        <button class=".btn-primary" onclick="showDetails('details-{{ producto.id_prod }}')" data-details="details-{{ producto.id_prod }}">+</button>
                         <br>
                         <div class="additional-details" id="details-{{ producto.id_prod }}" style="display: none;">
                             <!-- Agrega aquí los detalles adicionales del producto -->

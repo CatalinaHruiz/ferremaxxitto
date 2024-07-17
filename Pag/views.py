@@ -73,41 +73,54 @@ def olvidocontraseña(request):
     return render(request, 'olvidocontraseña.html')
 
 def password_recovery_view(request):
-    preguntas = pregunta.objects.all()  # Asegúrate de que las preguntas se obtengan correctamente
-    return render(request, 'olvidocontraseña.html', {'preguntas': preguntas})  # Ruta correcta
-#FUNCIONES DEL recuperar contraseñav
-def recover_password(request):
-    if request.method == 'POST':
-        correo_usu = request.POST['correo_usu']
-        id_preg = request.POST['id_preg']
-        respuesta_preg = request.POST['respuesta_preg']
-        nueva_contrasena = request.POST['nueva_contrasena']
-        repite_nueva_contrasena = request.POST['repite_nueva_contrasena']
-
-        if nueva_contrasena != repite_nueva_contrasena:
-            error = 'Las contraseñas no coinciden.'
-            preguntas = pregunta.objects.all()
-            return render(request, 'olvidocontraseña.html', {'preguntas': preguntas, 'error': error})
-
-        try:
-            user = usuario.objects.get(correo_usu=correo_usu, id_preg=id_preg)
-            if user.respuesta_preg == respuesta_preg:
-                user.contrasena_usu = make_password(nueva_contrasena)
-                user.save()
-                return redirect('password_recovery_success')  # Redirige a una página de éxito
-            else:
-                error = 'Respuesta incorrecta'
-        except usuario.DoesNotExist:
-            error = 'Usuario o pregunta de seguridad incorrectos'
-
-        preguntas = pregunta.objects.all()
-        return render(request, 'olvidocontraseña.html', {'preguntas': preguntas, 'error': error})
-
     preguntas = pregunta.objects.all()
     return render(request, 'olvidocontraseña.html', {'preguntas': preguntas})
 
 def password_recovery_success(request):
-    return render(request, 'password_recovery_success.html')
+    return render(request, 'password_recovery_success.html')   
+
+#FUNCIONES DEL recuperar contraseñav
+def recuperar_contrasena(request):
+    if request.method == 'POST':
+        correo_usu = request.POST.get('correo_usu')
+        id_preg = request.POST.get('pregunta')
+        respuesta = request.POST.get('respuesta')
+        nueva_contraseña = request.POST.get('nueva_contraseña')
+        repetir_contraseña = request.POST.get('repetir_contraseña')
+
+        # Validar que se haya seleccionado una pregunta válida
+        if id_preg is None or id_preg == '':
+            messages.error(request, 'Debes seleccionar una pregunta de seguridad válida.')
+            return redirect('recuperar_contrasena')
+
+        # Validar que las contraseñas nuevas coincidan
+        if nueva_contraseña != repetir_contraseña:
+            messages.error(request, 'Las contraseñas nuevas no coinciden.')
+            return redirect('recuperar_contrasena')
+
+        try:
+            # Obtener el usuario por correo electrónico
+            usuario_obj = usuario.objects.get(correo_usu=correo_usu)
+
+            # Validar la respuesta de seguridad
+            if str(usuario_obj.id_preg_id) != id_preg or usuario_obj.respuesta_preg != respuesta:
+                messages.error(request, 'La respuesta de seguridad no es válida.')
+                return redirect('recuperar_contrasena')
+
+            # Cambiar la contraseña
+            usuario_obj.contrasena_usu = nueva_contraseña
+            usuario_obj.save()
+
+            messages.success(request, 'Contraseña cambiada exitosamente.')
+            return redirect('password_recovery_success')
+
+        except usuario.DoesNotExist:
+            messages.error(request, 'No se encontró ningún usuario con ese correo electrónico.')
+            return redirect('recuperar_contrasena')
+
+    # Si es GET o no se procesó correctamente, renderizar el formulario inicial
+    preguntas = pregunta.objects.all()
+    return render(request, 'recuperacion_contrasena.html', {'preguntas': preguntas})
 #FUNCIONES DEL USUARIO
 def registrar(request):
     if request.method == 'POST':

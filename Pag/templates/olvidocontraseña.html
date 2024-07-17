@@ -1,51 +1,57 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tienda Online</title>
+    <title>Recuperar Contraseña</title>
+    <link rel="icon" href="{% static 'favicon.ico' %}" type="image/x-icon">
     <link rel="stylesheet" href="{% static 'css/inicioseccion.css' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 </head>
 <body>
 
 <div class="container" id="container">
-    <!-- Olvido Contraseña -->
+    <!--Olvido Contraseña-->
     <div class="form-container sign-in-container">
-        <form method="post" action="{% url 'recover_password' %}">
+        <form method="POST">
             {% csrf_token %}
             <h1>¿Olvidaste tu contraseña? 😟</h1>
+            {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        
             <span>No te preocupes puedes cambiarla, responde la pregunta de seguridad🤗</span>
-            <input type="email" name="correo_usu" placeholder="Correo electrónico" required/>
-            <select name="id_preg" required>
-                <option value="" selected disabled>Selecciona una pregunta de Seguridad</option>
+            <input type="email" name="correo_usu" placeholder="Correo electrónico" required />
+            <select name="pregunta" required>
+                <option value="" disabled selected hidden>Selecciona una pregunta de seguridad</option>
                 {% for pregunta in preguntas %}
                     <option value="{{ pregunta.id_preg }}">{{ pregunta.nombre_preg }}</option>
                 {% endfor %}
             </select>
-            <input type="text" name="respuesta_preg" placeholder="Respuesta de Seguridad" required />
-            <input type="password" name="nueva_contrasena" placeholder="Nueva Contraseña" required />
-            <input type="password" name="repite_nueva_contrasena" placeholder="Repite tu nueva Contraseña" required />
+            <input type="text" name="respuesta" placeholder="Respuesta de seguridad" required />
+            <input type="password" name="nueva_contraseña" placeholder="Nueva Contraseña" required />
+            <input type="password" name="repetir_contraseña" placeholder="Repite tu nueva Contraseña" required />
             <a href="{% url 'Sesion' %}">Volver a Inicio de sesión</a>
             <button type="submit">Cambiar Contraseña</button>
-            {% if error %}
-                <p>{{ error }}</p>
-            {% endif %}
         </form>
     </div>
-    <!-- Fin del formulario de Olvido Contraseña -->
+    <!--Fin del formulario de Olvido Contraseña-->
 
-    <!-- Interfaces de Hola constructor -->
+    <!--Interfaces de Hola constructor-->
     <div class="overlay-container">
         <div class="overlay">
             <div class="overlay-panel overlay-right">
-                <h1>¡Hola Constructor! 🔨</h1>
+                <h1>¡ Hola Constructor ! 🔨</h1>
                 <p>Si olvidaste tu contraseña, puedes cambiarla aquí.</p>
             </div>
         </div>
     </div>
-    <!-- Fin Interfaces de Hola constructor -->
+    <!--Fin Interfaces de Hola constructor-->
 </div>
 
 <footer>
